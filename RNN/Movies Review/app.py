@@ -1,3 +1,5 @@
+from nltk.stem import WordNetLemmatizer
+import spacy
 import nltk
 from nltk.corpus import stopwords
 import string
@@ -9,6 +11,7 @@ import pandas as pd
 from keras.models import load_model
 from tensorflow.keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
+from nltk.tokenize import word_tokenize
 
 import contractions
 import pickle
@@ -129,10 +132,13 @@ def expand_contractions(text):
     return expanded_text
 
 
+lemmatizer = WordNetLemmatizer()
+
+
 def lemmatize_text(text):
-    doc = nlp(text)
-    lemmatized_text = ' '.join([token.lemma_ for token in doc])
-    return lemmatized_text
+    word_list = word_tokenize(text)
+    lemmatized_output = ' '.join([lemmatizer.lemmatize(w) for w in word_list])
+    return lemmatized_output
 
 
 def do_tokenization(text):
@@ -171,6 +177,9 @@ def remove_emoji(text):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+model = load_model('./RNN_MOVIE_REVIEW.h5')
 
 
 @app.route('/predict', methods=['POST'])
