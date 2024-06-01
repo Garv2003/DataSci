@@ -1,6 +1,8 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, render_template
 import tensorflow as tf
 from tensorflow.keras.models import load_model
+import keras
+
 import os
 
 app = Flask(__name__)
@@ -31,7 +33,7 @@ def predict():
 
     image = tf.keras.preprocessing.image.load_img(
         'image.jpg', target_size=(32, 32))
-    input_arr = tf.keras.preprocessing.image.img_to_array(image)
+    input_arr = keras.preprocessing.image.img_to_array(image)
     input_arr = tf.expand_dims(input_arr, 0)
 
     prediction = model.predict(input_arr)
