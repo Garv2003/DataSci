@@ -1,7 +1,7 @@
-from flask import Flask, request, render_template
-import tensorflow as tf
+from flask import Flask, request, jsonify, render_template
 from tensorflow.keras.models import load_model
-import keras
+from tensorflow.keras.preprocessing import image
+import numpy as np
 
 import os
 
@@ -18,6 +18,14 @@ def load_my_model(model_path):
         return None
 
 
+def prepare_image(img_path):
+    img = image.load_img(img_path, target_size=(32, 32))
+    img_array = image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)
+    img_array /= 255.0
+    return img_array
+
+
 model = load_my_model('model.h5')
 
 
@@ -28,16 +36,15 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    if 'image' not in request.files:
+        return jsonify({'error': 'No file provided'})
+
     image_file = request.files['image']
     image_file.save('image.jpg')
 
-    image = tf.keras.preprocessing.image.load_img(
-        'image.jpg', target_size=(32, 32))
-    input_arr = keras.preprocessing.image.img_to_array(image)
-    input_arr = tf.expand_dims(input_arr, 0)
-
-    prediction = model.predict(input_arr)
-    predicted_class = prediction.argmax()
+    img = prepare_image('image.jpg')
+    predictions = model.predict(img)
+    predicted_class = np.argmax(predictions, axis=1)[0]
     class_names = ['airplane', 'automobile', 'bird', 'cat',
                    'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
     class_name = class_names[predicted_class]
