@@ -1,4 +1,0 @@
-flask
-tensorflow==2.6.0
-keras
-python-dotenv
