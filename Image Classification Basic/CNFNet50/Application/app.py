@@ -53,3 +53,7 @@ def predict():
         return "<p id='prediction' class='flex items-center justify-center w-96 p-4 mt-4 bg-white shadow-md rounded-lg text-gray-800 font-bold'>" + class_name.capitalize() + "</p>"
     except Exception as e:
         return "<p id='prediction' class='flex items-center justify-center w-96 p-4 mt-4 bg-white shadow-md rounded-lg text-red-800 font-bold'>Error predicting image</p>"
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)

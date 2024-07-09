@@ -57,3 +57,7 @@ def predict():
     except Exception as e:
         print(f"Error predicting image: {e}")
         return "<p id='prediction' class='flex items-center justify-center w-96 p-4 mt-4 bg-white shadow-md rounded-lg text-red-800 font-bold'>Error predicting image please try again</p>"
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
