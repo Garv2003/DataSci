@@ -1,4 +1,4 @@
 flask
-tensorflow==2.6.0
+tensorflow
 keras
 python-dotenv
