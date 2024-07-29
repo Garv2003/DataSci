@@ -1,6 +1,0 @@
-flask
-tensorflow
-keras
-python-dotenv
-# Gunicorn
-pillow
